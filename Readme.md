@@ -50,7 +50,7 @@ Veteriner yönetim sistemi projesi, bir veteriner kliniğinin kendi işlerini y�
 - availableDate:LocalDate
 
 ### Appointment (Randevu)
-- id:Long
+- id:Long 
 - appointmentDate:LocalDateTime
 
 ## API Temel Özellikleri
