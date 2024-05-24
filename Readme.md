@@ -9,7 +9,8 @@ Veteriner yönetim sistemi projesi, bir veteriner kliniğinin kendi işlerini y�
 - Hayvanlara uygulanan aşıların kaydedilmesi ve yönetilmesi
 - Veteriner hekimlere randevu oluşturulması ve randevuların yönetilmesi
 
-![alt text](//UML_diyagram.png)
+![UML_diyagram](https://github.com/barismutluu/Veteriner-Sistemi/assets/105866654/68f2554e-aa01-4fed-900a-1d8e6d222b38)
+
 
 ## Projede Bulunan Entityler
 
