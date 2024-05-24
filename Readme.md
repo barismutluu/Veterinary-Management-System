@@ -9,6 +9,8 @@ Veteriner yönetim sistemi projesi, bir veteriner kliniğinin kendi işlerini y�
 - Hayvanlara uygulanan aşıların kaydedilmesi ve yönetilmesi
 - Veteriner hekimlere randevu oluşturulması ve randevuların yönetilmesi
 
+![alt text](//UML_diyagram.png )
+
 ## Projede Bulunan Entityler
 
 ### Animal (Hayvan)
