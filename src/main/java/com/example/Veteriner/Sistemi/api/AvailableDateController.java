@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+// AvailableDateController sınıfı, kullanılabilir tarihlerle ilgili istekleri yönetir.
 @RestController
 @RequestMapping("/v1/availabledate")
 public class AvailableDateController {
@@ -30,6 +31,7 @@ public class AvailableDateController {
         this.modelMapper = modelMapper;
     }
 
+    // Yeni bir kullanılabilir tarih kaydeder.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AvailableDateResponse> save(@Valid @RequestBody AvailableDateSaveRequest availableDateSaveRequest) {
@@ -41,6 +43,8 @@ public class AvailableDateController {
         this.availableDateService.save(saveAvailableDate);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveAvailableDate, AvailableDateResponse.class));
     }
+
+    // Belirtilen kimliğe sahip bir kullanılabilir tarihi döner.
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AvailableDateResponse> get(@PathVariable("id") int id) {
@@ -49,6 +53,7 @@ public class AvailableDateController {
         return ResultHelper.success(availableDateResponse);
     }
 
+    // Sayfalama yaparak belirli bir sayfa numarası ve sayfa boyutuna göre kullanılabilir tarihleri döner.
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CursorResponse<AvailableDateResponse>> cursor(
@@ -62,6 +67,7 @@ public class AvailableDateController {
         return ResultHelper.cursor(availableDateResponsePage);
     }
 
+    // Var olan bir kullanılabilir tarihi günceller.
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AvailableDateResponse> update(@Valid @RequestBody AvailableDateUpdateRequest availableDateUpdateRequest) {
@@ -70,6 +76,7 @@ public class AvailableDateController {
         return ResultHelper.success(this.modelMapper.forResponse().map(updateAvailableDate, AvailableDateResponse.class));
     }
 
+    // Belirtilen kimliğe sahip bir kullanılabilir tarihi siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Result delete(@PathVariable("id") long id){

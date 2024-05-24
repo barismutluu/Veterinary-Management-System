@@ -23,6 +23,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// Bu sınıf, randevularla ilgili iş mantığını yürütür.
 @Service
 public class AppointmentManager implements IAppointmentService {
     private final AppointmentRepo appointmentRepo;
@@ -39,7 +40,7 @@ public class AppointmentManager implements IAppointmentService {
         this.animalRepo = animalRepo;
     }
 
-
+    // Belirli bir tarih aralığında randevuları getirir.
     @Override
     public List<Appointment> getAppointmentsByDateRange(LocalDate startDate, LocalDate endDate) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
@@ -47,6 +48,7 @@ public class AppointmentManager implements IAppointmentService {
         return appointmentRepo.findByAppointmentDateTimeBetween(startDateTime, endDateTime);
     }
 
+    // Belirli bir tarih aralığında ve belirli bir hayvan için randevuları getirir.
     @Override
     public List<Appointment> getAppointmentsByDateRangeAndAnimal(LocalDate startDate, LocalDate endDate, Long animalId) {
         LocalDateTime startDateTime = startDate.atStartOfDay();
@@ -54,65 +56,62 @@ public class AppointmentManager implements IAppointmentService {
         return appointmentRepo.findByAnimalIdAndAppointmentDateTimeBetween(animalId, startDateTime, endDateTime);
     }
 
+    // Belirli bir tarih aralığında ve belirli bir doktor için randevuları getirir.
     @Override
     public List<Appointment> getAppointmentsByDateRangeAndDoctorId(LocalDate startDate, LocalDate endDate, Long doctorId) {
-        // Doktor ID'sine göre ve tarih aralığına göre randevuları al
         LocalDateTime startDateTime = LocalDateTime.of(startDate, LocalTime.MIDNIGHT);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.of(23, 59, 59));
         return appointmentRepo.findByDateRangeAndDoctorId(startDateTime, endDateTime, doctorId);
     }
 
-
+    // Doktorun belirtilen tarihte müsait olup olmadığını kontrol eder.
     public boolean isDoctorAvailableOnDate(long doctorId, LocalDateTime dateTime) {
-        // Doktorun belirtilen tarihte çalışıp çalışmadığını kontrol eden kodu ekle
-        // Örneğin, haftanın belirli günleri çalışıyor olabilir.
-        // Basit bir kontrol: doktor haftasonu çalışmıyor
         int dayOfWeek = dateTime.getDayOfWeek().getValue();
         return dayOfWeek != 6 && dayOfWeek != 7; // Cumartesi ve Pazar günleri çalışmıyor
     }
 
+    // Doktorun belirtilen saatte başka bir randevusu olup olmadığını kontrol eder.
     public boolean hasDoctorAppointmentAtTime(long doctorId, LocalDateTime dateTime) {
         List<Appointment> appointments = appointmentRepo.findByDoctorIdAndAppointmentDateTime(doctorId, dateTime);
         return !appointments.isEmpty();
     }
 
+    // Yeni bir randevu kaydı oluşturur.
     @Override
     public Appointment save(Appointment appointment) {
-        // Ensure the appointment is on the hour
         if (appointment.getAppointmentDateTime().getMinute() != 0 || appointment.getAppointmentDateTime().getSecond() != 0) {
-            throw new IllegalArgumentException("Appointments can only be made on the hour.");
+            throw new IllegalArgumentException("Randevular sadece saat başlarında yapılabilir.");
         }
 
-        // Fetch the doctor and animal by their IDs
         Doctor doctor = doctorRepo.findById(appointment.getDoctor().getId())
-                .orElseThrow(() -> new NotFoundException("Doctor not found"));
+                .orElseThrow(() -> new NotFoundException("Doktor bulunamadı"));
         Animal animal = animalRepo.findById(appointment.getAnimal().getId())
-                .orElseThrow(() -> new NotFoundException("Animal not found"));
+                .orElseThrow(() -> new NotFoundException("Hayvan bulunamadı"));
 
         appointment.setDoctor(doctor);
         appointment.setAnimal(animal);
 
-        // Check if doctor already has an appointment at the same time
         if (appointmentRepo.existsByDoctorIdAndAppointmentDateTime(appointment.getDoctor().getId(), appointment.getAppointmentDateTime())) {
-            throw new IllegalArgumentException("Doctor already has an appointment at this time.");
+            throw new IllegalArgumentException("Doktorun bu saatte zaten bir randevusu var.");
         }
 
         return appointmentRepo.save(appointment);
     }
 
-
+    // Belirli bir randevuyu getirir.
     @Override
     public Appointment get(long id) {
         return this.appointmentRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
     }
 
+    // Sayfalama işlemi ile randevuları getirir.
     @Override
     public Page<Appointment> cursor(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
         return this.appointmentRepo.findAll(pageable);
     }
 
-
+    // Bir randevuyu günceller.
     @Override
     public Appointment update(Appointment appointment) {
         this.get(appointment.getId());
@@ -121,6 +120,7 @@ public class AppointmentManager implements IAppointmentService {
         return this.appointmentRepo.save(appointment);
     }
 
+    // Bir randevuyu siler.
     @Override
     public boolean delete(long id) {
         Appointment appointment = this.get(id);
@@ -128,13 +128,14 @@ public class AppointmentManager implements IAppointmentService {
         return true;
     }
 
-
-
+    // Hayvanın var olup olmadığını kontrol eder.
     private void checkAnimalExists(long animalId) {
         if (!animalManager.existsById(animalId)) {
             throw new NotFoundException(Msg.NOT_FOUND);
         }
     }
+
+    // Doktorun belirli bir tarihte müsait olup olmadığını kontrol eder.
     private void checkDoctorAvailability(long doctorId, LocalDateTime dateTime) {
         if (!doctorManager.isDoctorAvailableOnDate(doctorId, dateTime)) {
             throw new DoctorAvailabilityException("Doktor bu tarihte çalışmamaktadır!");

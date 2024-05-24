@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// AnimalController sınıfı, hayvanlarla ilgili istekleri yönetir.
 @RestController
 @RequestMapping("/v1/animals")
 public class AnimalController {
@@ -33,6 +34,7 @@ public class AnimalController {
         this.customerService = customerService;
     }
 
+    // Yeni bir hayvan kaydeder.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AnimalResponse> save(@Valid @RequestBody AnimalSaveRequest animalSaveRequest) {
@@ -46,6 +48,7 @@ public class AnimalController {
 
     }
 
+    // Belirtilen kimliğe sahip bir hayvanı döner.
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AnimalResponse> get(@PathVariable("id") int id) {
@@ -54,6 +57,22 @@ public class AnimalController {
         return ResultHelper.success(animalResponse);
     }
 
+    @GetMapping("/customer/{customerId}/animals")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<AnimalResponse>> getCustomerAnimals(@PathVariable("customerId") long customerId) {
+        // Hayvan sahibinin kimlik numarasına göre ilgili hayvanları al
+        List<Animal> customerAnimals = this.animalService.getCustomerAnimals(customerId);
+
+        // Alınan hayvanları AnimalResponse nesnelerine dönüştür
+        List<AnimalResponse> animalResponses = customerAnimals.stream()
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class))
+                .collect(Collectors.toList());
+
+        // Başarılı bir şekilde hayvanları dön
+        return ResultHelper.success(animalResponses);
+    }
+
+    // Belirtilen ada göre hayvan listesi döner.
     @GetMapping("/name")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<List<AnimalResponse>> findByName(@RequestParam("name") String name) {
@@ -64,6 +83,7 @@ public class AnimalController {
         return ResultHelper.success(animalResponses);
     }
 
+    // Sayfalama yaparak belirli bir sayfa numarası ve sayfa boyutuna göre hayvanları döner.
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CursorResponse<AnimalResponse>> cursor(
@@ -77,6 +97,7 @@ public class AnimalController {
         return ResultHelper.cursor(animalResponsePage);
     }
 
+    // Var olan bir hayvanı günceller.
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AnimalResponse> update(@Valid @RequestBody AnimalUpdateRequest animalUpdateRequest) {
@@ -85,11 +106,11 @@ public class AnimalController {
         return ResultHelper.success(this.modelMapper.forResponse().map(updateAnimal, AnimalResponse.class));
     }
 
+    // Belirtilen kimliğe sahip bir hayvanı siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Result delete(@PathVariable("id") long id) {
         this.animalService.delete(id);
         return ResultHelper.ok();
     }
-
 }

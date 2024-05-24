@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// AppointmentController sınıfı, randevularla ilgili istekleri yönetir.
 @RestController
 @RequestMapping("/v1/appointments")
 public class AppointmentController {
@@ -40,15 +41,7 @@ public class AppointmentController {
         this.modelMapper = modelMapper;
     }
 
-
-//    @PostMapping()
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public ResultData<AppointmentResponse> save(@Valid @RequestBody AppointmentSaveRequest appointmentSaveRequest) {
-//        Appointment saveAppointment = this.modelMapper.forRequest().map(appointmentSaveRequest, Appointment.class);
-//        this.appointmentService.save(saveAppointment);
-//        return ResultHelper.created(this.modelMapper.forResponse().map(saveAppointment, AppointmentResponse.class));
-//    }
-
+    // Yeni bir randevu kaydeder.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AppointmentResponse> save(@Valid @RequestBody AppointmentSaveRequest appointmentSaveRequest) {
@@ -68,6 +61,7 @@ public class AppointmentController {
         return ResultHelper.created(appointmentResponse);
     }
 
+    // Belirtilen kimliğe sahip bir randevuyu döner.
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AppointmentResponse> get(@PathVariable("id") int id) {
@@ -76,6 +70,7 @@ public class AppointmentController {
         return ResultHelper.success(appointmentResponse);
     }
 
+    // Sayfalama yaparak belirli bir sayfa numarası ve sayfa boyutuna göre randevuları döner.
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CursorResponse<AppointmentResponse>> cursor(
@@ -89,6 +84,7 @@ public class AppointmentController {
         return ResultHelper.cursor(appointmentResponsePage);
     }
 
+    // Belirtilen tarih aralığında ve doktor kimliğine göre randevuları döner.
     @GetMapping("/filter/dateANDdoctor/appointments")
     public ResultData<List<AppointmentResponse>> getAppointmentsByDateRangeDoctor(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -104,7 +100,7 @@ public class AppointmentController {
 
         // Eğer randevu bulunamadıysa
         if (appointments.isEmpty()) {
-            return ResultHelper.errorWithData("Belirtilen tarih aralığında randevu bulunamadı.", null, HttpStatus.NOT_FOUND);
+            return ResultHelper.errorWithData(Msg.NOT_FOUND, null, HttpStatus.NOT_FOUND);
 
         }
 
@@ -116,6 +112,7 @@ public class AppointmentController {
         return ResultHelper.success(appointmentResponses);
     }
 
+    // Belirtilen tarih aralığında ve hayvan kimliğine göre randevuları döner.
     @GetMapping("/filter/dateANDanimal/appointments")
     public ResultData<List<AppointmentResponse>> getAppointmentsByDateRangeAndAnimal(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
@@ -126,7 +123,7 @@ public class AppointmentController {
 
         // Eğer randevu bulunamadıysa
         if (appointments.isEmpty()) {
-            return ResultHelper.errorWithData("Belirtilen tarih aralığında ve hayvana göre randevu bulunamadı.", null, HttpStatus.NOT_FOUND);
+            return ResultHelper.errorWithData(Msg.NOT_FOUND, null, HttpStatus.NOT_FOUND);
         }
 
         // Randevuları AppointmentResponse listesine dönüştür
@@ -137,6 +134,7 @@ public class AppointmentController {
         return ResultHelper.success(appointmentResponses);
     }
 
+    // Var olan bir randevuyu günceller.
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AppointmentResponse> update(@Valid @RequestBody AppointmentUpdateRequest appointmentUpdateRequest) {
@@ -145,6 +143,7 @@ public class AppointmentController {
         return ResultHelper.success(this.modelMapper.forResponse().map(updateAppointment, AppointmentResponse.class));
     }
 
+    // Belirtilen kimliğe sahip bir randevuyu siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Result delete(@PathVariable("id") long id){

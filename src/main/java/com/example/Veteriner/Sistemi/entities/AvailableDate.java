@@ -9,21 +9,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "availabledate")
+@Table(name = "availabledate") // Veritabanında bu varlık için kullanılacak tablo adı
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@AllArgsConstructor // Tüm alanları içeren bir constructor oluşturur
+@NoArgsConstructor // Boş bir constructor oluşturur
 public class AvailableDate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "availabledate_id",columnDefinition = "serial")
+    @Id // Bu alanın birincil anahtar alanı olduğunu belirtir
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Otomatik artan bir değerle doldurulacağını belirtir
+    @Column(name = "availabledate_id",columnDefinition = "serial") // Veritabanındaki sütun adı ve özellikleri
     private long id;
 
-    @NotNull
-    @Column(name = "availabledate")
-    private LocalDate availableDate;
+    @NotNull // Bu alanın null olamayacağını belirtir
+    @Column(name = "availabledate") // Veritabanındaki sütun adı
+    private LocalDate availableDate; // Kullanılabilir tarih
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id", referencedColumnName="doctor_id")
-    private Doctor doctor;
+    @ManyToOne(fetch = FetchType.LAZY) // Birçok AvailableDate nesnesine karşılık gelebileceğini belirtir
+    @JoinColumn(name = "doctor_id", referencedColumnName="doctor_id") // İlişkilendirilecek doktor nesnesinin sütun adı
+    private Doctor doctor; // Bu tarihte hizmet verecek doktor
 }

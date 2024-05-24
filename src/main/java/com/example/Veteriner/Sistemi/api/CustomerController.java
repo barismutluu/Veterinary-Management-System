@@ -8,9 +8,7 @@ import com.example.Veteriner.Sistemi.core.utilies.ResultHelper;
 import com.example.Veteriner.Sistemi.dto.request.customer.CustomerSaveRequest;
 import com.example.Veteriner.Sistemi.dto.request.customer.CustomerUpdateRequest;
 import com.example.Veteriner.Sistemi.dto.response.CursorResponse;
-import com.example.Veteriner.Sistemi.dto.response.animal.AnimalResponse;
 import com.example.Veteriner.Sistemi.dto.response.customer.CustomerResponse;
-import com.example.Veteriner.Sistemi.entities.Animal;
 import com.example.Veteriner.Sistemi.entities.Customer;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// CustomerController sınıfı, müşteri ile ilgili istekleri yönetir.
 @RestController
 @RequestMapping("/v1/customers")
 public class CustomerController {
@@ -31,6 +30,7 @@ public class CustomerController {
         this.modelMapper = modelMapper;
     }
 
+    // Yeni bir müşteri kaydeder.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<CustomerResponse> save(@Valid @RequestBody CustomerSaveRequest customerSaveRequest) {
@@ -38,6 +38,8 @@ public class CustomerController {
         this.customerService.save(saveCustomer);
         return ResultHelper.created(this.modelMapper.forResponse().map(saveCustomer, CustomerResponse.class));
     }
+
+    // Belirtilen kimliğe sahip bir müşteriyi döner.
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CustomerResponse> get(@PathVariable("id") int id) {
@@ -46,6 +48,7 @@ public class CustomerController {
         return ResultHelper.success(customerResponse);
     }
 
+    // İsim ile müşteri arar.
     @GetMapping("/name")
     @ResponseStatus(HttpStatus.OK)
     public ResultData<List<CustomerResponse>> findByName(@RequestParam("name") String name) {
@@ -56,6 +59,7 @@ public class CustomerController {
         return ResultHelper.success(customerResponses);
     }
 
+    // Sayfalama yaparak belirli bir sayfa numarası ve sayfa boyutuna göre müşterileri döner.
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CursorResponse<CustomerResponse>> cursor(
@@ -69,6 +73,7 @@ public class CustomerController {
         return ResultHelper.cursor(customerResponsePage);
     }
 
+    // Var olan bir müşteriyi günceller.
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CustomerResponse> update(@Valid @RequestBody CustomerUpdateRequest customerUpdateRequest) {
@@ -77,6 +82,7 @@ public class CustomerController {
         return ResultHelper.success(this.modelMapper.forResponse().map(updateCustomer, CustomerResponse.class));
     }
 
+    // Belirtilen kimliğe sahip bir müşteriyi siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Result delete(@PathVariable("id") long id){

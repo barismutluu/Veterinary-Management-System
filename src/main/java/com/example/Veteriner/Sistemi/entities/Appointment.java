@@ -9,29 +9,26 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "appointment")
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity // Bu sınıfın bir JPA entity olduğunu belirtir.
+@Table(name = "appointment") // Veritabanında kullanılacak tablo adını belirtir.
+@Data // Lombok kütüphanesi tarafından sağlanan getter, setter ve toString gibi yöntemleri otomatik olarak ekler.
+@AllArgsConstructor // Tüm alanları içeren bir constructor oluşturur.
+@NoArgsConstructor // Boş bir constructor oluşturur.
 public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "appointment_id",columnDefinition = "serial")
-    private long id;
+    @Id // Bu alanın birincil anahtar (primary key) olduğunu belirtir.
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Otomatik artan (auto-increment) bir değerle bu alanın doldurulacağını belirtir.
+    @Column(name = "appointment_id",columnDefinition = "serial") // Veritabanı sütun adını ve özelliklerini belirtir.
+    private long id; // Randevu ID'si.
 
-    @NotNull
-    @Column(name = "appointmentDateTime")
-    private LocalDateTime appointmentDateTime;
+    @NotNull // Bu alanın null olamayacağını belirtir.
+    @Column(name = "appointmentDateTime") // Veritabanı sütun adını belirtir.
+    private LocalDateTime appointmentDateTime; // Randevunun tarihi ve saati.
 
+    @ManyToOne(fetch = FetchType.LAZY) // Birçok randevunun bir hayvana atanabileceğini belirtir.
+    @JoinColumn(name = "animal_id", referencedColumnName="animal_id") // İlişkilendirme için kullanılacak sütunları belirtir.
+    private Animal animal; // Randevu sahibi hayvan.
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "animal_id", referencedColumnName="animal_id")
-    private Animal animal;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id", referencedColumnName="doctor_id")
-    private Doctor doctor;
-
-
+    @ManyToOne(fetch = FetchType.LAZY) // Birçok randevunun bir doktora atanabileceğini belirtir.
+    @JoinColumn(name = "doctor_id", referencedColumnName="doctor_id") // İlişkilendirme için kullanılacak sütunları belirtir.
+    private Doctor doctor; // Randevuyu alan doktor.
 }

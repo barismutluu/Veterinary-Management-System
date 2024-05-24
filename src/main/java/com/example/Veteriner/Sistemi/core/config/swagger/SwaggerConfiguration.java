@@ -5,18 +5,23 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+// Swagger yapılandırması için kullanılan sınıfı tanımlar.
 @Configuration
 public class SwaggerConfiguration {
 
-        @Bean
-        public OpenAPI openAPI() {
-            return new OpenAPI().info(new Info()
-                    .title("Veteriner Sistemi")
-                    .description("Veteriner project for Spring Boot")
-                    .contact(new Contact().name("Baris"))
-                    .version("1.0.0"));
-        }
-
+    // OpenAPI nesnesini oluşturan bir Bean metodu.
+    @Bean
+    public OpenAPI openAPI() {
+        // Yeni bir OpenAPI nesnesi oluşturur ve bilgi kısmını ayarlar.
+        return new OpenAPI().info(new Info()
+                // API'nin başlığını belirler.
+                .title("Veteriner Sistemi")
+                // API'nin açıklamasını belirler.
+                .description("Spring Boot için Veteriner projesi")
+                // API ile ilgili kişiyi belirler.
+                .contact(new Contact().name("Baris"))
+                // API sürümünü belirler.
+                .version("1.0.0"));
     }
+}
