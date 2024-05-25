@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.entities;
 
 // Gerekli paketlerin import edilmesi
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -53,12 +54,12 @@ public class Doctor {
     // Bu alanın birden fazla AvailableDate nesnesi ile ilişkilendirileceğini belirtiyor
     // CascadeType ile bu varlıkla ilgili tüm değişikliklerin ilişkili varlıklara da uygulanacağını belirtir
     // mappedBy ile bu ilişkiyi sahiplenen tarafın AvailableDate sınıfında "doctor" alanı olduğunu belirtiyor
-    @OneToMany(mappedBy = "doctor",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private List<AvailableDate> availableDates;
 
     // Bu alanın birden fazla Appointment nesnesi ile ilişkilendirileceğini belirtiyor
     // CascadeType ile bu varlıkla ilgili tüm değişikliklerin ilişkili varlıklara da uygulanacağını belirtir
     // mappedBy ile bu ilişkiyi sahiplenen tarafın Appointment sınıfında "doctor" alanı olduğunu belirtiyor
-    @OneToMany(mappedBy = "doctor",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "doctor", cascade = CascadeType.REMOVE)
     private List<Appointment> appointments;
 }

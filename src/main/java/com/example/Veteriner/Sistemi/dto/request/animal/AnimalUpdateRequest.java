@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.dto.request.animal;
 
 // Veri transfer nesnesi olarak işlev gören AnimalUpdateRequest sınıfı
+
 import jakarta.validation.constraints.Positive; // Bu kütüphane, id alanının pozitif olmasını zorlar
 import lombok.AllArgsConstructor; // Lombok'ten gelen constructor oluşturma işlevini eklemek için gerekli annotasyon
 import lombok.Data; // Lombok'ten gelen getter, setter, equals, hashCode ve toString yöntemlerini otomatik olarak eklemek için gerekli annotasyon

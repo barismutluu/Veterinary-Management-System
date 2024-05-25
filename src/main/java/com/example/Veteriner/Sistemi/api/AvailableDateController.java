@@ -71,7 +71,7 @@ public class AvailableDateController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AvailableDateResponse> update(@Valid @RequestBody AvailableDateUpdateRequest availableDateUpdateRequest) {
-        AvailableDate updateAvailableDate=this.modelMapper.forResponse().map(availableDateUpdateRequest, AvailableDate.class);
+        AvailableDate updateAvailableDate = this.modelMapper.forResponse().map(availableDateUpdateRequest, AvailableDate.class);
         this.availableDateService.update(updateAvailableDate);
         return ResultHelper.success(this.modelMapper.forResponse().map(updateAvailableDate, AvailableDateResponse.class));
     }
@@ -79,7 +79,7 @@ public class AvailableDateController {
     // Belirtilen kimliğe sahip bir kullanılabilir tarihi siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") long id){
+    public Result delete(@PathVariable("id") long id) {
         this.availableDateService.delete(id);
         return ResultHelper.ok();
     }

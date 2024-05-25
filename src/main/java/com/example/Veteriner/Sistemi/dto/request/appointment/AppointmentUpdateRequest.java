@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.dto.request.appointment;
 
 // Gerekli validasyonları sağlamak için kullanılan annotasyonlar
+
 import jakarta.validation.constraints.Positive;
 
 // Lombok kütüphanesi kullanılarak otomatik olarak getter, setter, equals, hashCode ve toString yöntemlerini oluşturmak için gerekli annotasyonlar

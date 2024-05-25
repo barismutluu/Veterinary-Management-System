@@ -138,7 +138,7 @@ public class AppointmentController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<AppointmentResponse> update(@Valid @RequestBody AppointmentUpdateRequest appointmentUpdateRequest) {
-        Appointment updateAppointment=this.modelMapper.forResponse().map(appointmentUpdateRequest, Appointment.class);
+        Appointment updateAppointment = this.modelMapper.forResponse().map(appointmentUpdateRequest, Appointment.class);
         this.appointmentService.update(updateAppointment);
         return ResultHelper.success(this.modelMapper.forResponse().map(updateAppointment, AppointmentResponse.class));
     }
@@ -146,7 +146,7 @@ public class AppointmentController {
     // Belirtilen kimliğe sahip bir randevuyu siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") long id){
+    public Result delete(@PathVariable("id") long id) {
         this.appointmentService.delete(id);
         return ResultHelper.ok();
     }

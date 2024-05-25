@@ -77,7 +77,7 @@ public class CustomerController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<CustomerResponse> update(@Valid @RequestBody CustomerUpdateRequest customerUpdateRequest) {
-        Customer updateCustomer=this.modelMapper.forResponse().map(customerUpdateRequest, Customer.class);
+        Customer updateCustomer = this.modelMapper.forResponse().map(customerUpdateRequest, Customer.class);
         this.customerService.update(updateCustomer);
         return ResultHelper.success(this.modelMapper.forResponse().map(updateCustomer, CustomerResponse.class));
     }
@@ -85,7 +85,7 @@ public class CustomerController {
     // Belirtilen kimliğe sahip bir müşteriyi siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") long id){
+    public Result delete(@PathVariable("id") long id) {
         this.customerService.delete(id);
         return ResultHelper.ok();
     }

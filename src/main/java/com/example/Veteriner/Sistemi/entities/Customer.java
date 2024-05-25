@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.entities;
 
 // Gerekli kütüphanelerin import edilmesi
+
 import jakarta.persistence.*; // JPA (Java Persistence API) için gerekli kütüphaneler
 import jakarta.validation.constraints.Email; // Email doğrulama için gerekli kütüphane
 import jakarta.validation.constraints.NotNull; // Null olmama koşulunu sağlamak için gerekli kütüphane
@@ -54,6 +55,6 @@ public class Customer {
     // Bir müşteri birden fazla hayvana sahip olabilir ilişkisinin tanımlanması (OneToMany)
     // CascadeType.REMOVE: Müşteri üzerinde yapılan her işlem (örneğin silme), ilişkili hayvanlar üzerinde de uygulanır
     // mappedBy: "customer" alanı, hayvanlar tablosundaki ilişkili alanın adıdır
-    @OneToMany(mappedBy = "customer",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
     private List<Animal> animals;
 }

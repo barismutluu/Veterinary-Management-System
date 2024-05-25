@@ -16,8 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor // Boş bir constructor oluşturur.
 public class Appointment {
     @Id // Bu alanın birincil anahtar (primary key) olduğunu belirtir.
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Otomatik artan (auto-increment) bir değerle bu alanın doldurulacağını belirtir.
-    @Column(name = "appointment_id",columnDefinition = "serial") // Veritabanı sütun adını ve özelliklerini belirtir.
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // Otomatik artan (auto-increment) bir değerle bu alanın doldurulacağını belirtir.
+    @Column(name = "appointment_id", columnDefinition = "serial") // Veritabanı sütun adını ve özelliklerini belirtir.
     private long id; // Randevu ID'si.
 
     @NotNull // Bu alanın null olamayacağını belirtir.
@@ -25,10 +26,12 @@ public class Appointment {
     private LocalDateTime appointmentDateTime; // Randevunun tarihi ve saati.
 
     @ManyToOne(fetch = FetchType.LAZY) // Birçok randevunun bir hayvana atanabileceğini belirtir.
-    @JoinColumn(name = "animal_id", referencedColumnName="animal_id") // İlişkilendirme için kullanılacak sütunları belirtir.
+    @JoinColumn(name = "animal_id", referencedColumnName = "animal_id")
+    // İlişkilendirme için kullanılacak sütunları belirtir.
     private Animal animal; // Randevu sahibi hayvan.
 
     @ManyToOne(fetch = FetchType.LAZY) // Birçok randevunun bir doktora atanabileceğini belirtir.
-    @JoinColumn(name = "doctor_id", referencedColumnName="doctor_id") // İlişkilendirme için kullanılacak sütunları belirtir.
+    @JoinColumn(name = "doctor_id", referencedColumnName = "doctor_id")
+    // İlişkilendirme için kullanılacak sütunları belirtir.
     private Doctor doctor; // Randevuyu alan doktor.
 }

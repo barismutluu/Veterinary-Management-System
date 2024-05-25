@@ -2,6 +2,7 @@ package com.example.Veteriner.Sistemi.bussines.abstracts;
 
 import com.example.Veteriner.Sistemi.entities.Animal;
 import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 // Bu arayüz, hayvanlarla ilgili iş mantığı operasyonlarını tanımlar.

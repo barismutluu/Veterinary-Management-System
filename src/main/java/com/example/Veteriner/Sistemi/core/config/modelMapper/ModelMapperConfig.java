@@ -10,7 +10,7 @@ public class ModelMapperConfig {
 
     // ModelMapper nesnesini oluşturarak Spring konteynerine eklemek için bir bean metodu.
     @Bean
-    public ModelMapper getModelMapper(){
+    public ModelMapper getModelMapper() {
         return new ModelMapper();
     }
 }

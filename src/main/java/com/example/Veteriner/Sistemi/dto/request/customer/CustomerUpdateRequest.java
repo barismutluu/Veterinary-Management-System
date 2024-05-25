@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.dto.request.customer;
 
 // Jakartan Validation API'sinden gelen annotasyonları kullanarak alan doğrulaması sağlar.
+
 import jakarta.validation.constraints.Positive;
 
 // Lombok kütüphanesi kullanılarak oluşturulan getter, setter, equals, hashCode ve toString yöntemlerini otomatik olarak eklemek için gerekli annotasyonlar.

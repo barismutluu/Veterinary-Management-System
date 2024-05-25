@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+
 @Entity
 @Table(name = "animals") // "animals" adında bir tabloya karşılık gelir
 @Data
@@ -17,7 +18,8 @@ import java.util.List;
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Otomatik artan bir kimlik alanı
-    @Column(name = "animal_id",columnDefinition = "serial") // Veritabanında "animal_id" olarak saklanır, "serial" tipinde
+    @Column(name = "animal_id", columnDefinition = "serial")
+    // Veritabanında "animal_id" olarak saklanır, "serial" tipinde
     private long id;
 
     @NotNull // Null olamaz
@@ -44,13 +46,13 @@ public class Animal {
     @Column(name = "animal_dateOfBirth") // Veritabanında "animal_dateOfBirth" olarak saklanır
     private LocalDate dateOfBirth;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "customer_id", referencedColumnName="customer_id") // "customer_id" sütunuyla ilişkilendirilmiş
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", referencedColumnName = "customer_id") // "customer_id" sütunuyla ilişkilendirilmiş
     private Customer customer;
 
-    @OneToMany(mappedBy = "animal",cascade = CascadeType.REMOVE) // Bir hayvanın birden çok aşısı olabilir
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE) // Bir hayvanın birden çok aşısı olabilir
     private List<Vaccine> vaccines;
 
-    @OneToMany(mappedBy = "animal",cascade = CascadeType.REMOVE) // Bir hayvanın birden çok randevusu olabilir
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.REMOVE) // Bir hayvanın birden çok randevusu olabilir
     private List<Appointment> appointments;
 }

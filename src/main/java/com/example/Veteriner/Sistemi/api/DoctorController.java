@@ -63,7 +63,7 @@ public class DoctorController {
     @PutMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<DoctorResponse> update(@Valid @RequestBody DoctorUpdateRequest doctorUpdateRequest) {
-        Doctor updateDoctor=this.modelMapper.forResponse().map(doctorUpdateRequest, Doctor.class);
+        Doctor updateDoctor = this.modelMapper.forResponse().map(doctorUpdateRequest, Doctor.class);
         this.doctorService.update(updateDoctor);
         return ResultHelper.success(this.modelMapper.forResponse().map(updateDoctor, DoctorResponse.class));
     }
@@ -71,7 +71,7 @@ public class DoctorController {
     // Belirtilen kimliğe sahip bir doktoru siler.
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Result delete(@PathVariable("id") long id){
+    public Result delete(@PathVariable("id") long id) {
         this.doctorService.delete(id);
         return ResultHelper.ok();
     }

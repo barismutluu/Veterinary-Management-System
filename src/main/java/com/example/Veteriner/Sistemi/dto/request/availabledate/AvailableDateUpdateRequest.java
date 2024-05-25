@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.dto.request.availabledate;
 
 // Jakartanın sağladığı @Positive annotasyonu, id alanının pozitif olmasını sağlar.
+
 import jakarta.validation.constraints.Positive;
 
 // Lombok kütüphanesinden gelen annotasyonlar, getter, setter, equals, hashCode ve toString yöntemlerini otomatik olarak oluşturur.

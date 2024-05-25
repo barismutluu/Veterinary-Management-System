@@ -1,6 +1,7 @@
 package com.example.Veteriner.Sistemi.entities;
 
 // Gerekli JPA ve doğrulama kütüphaneleri import ediliyor.
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -48,7 +49,7 @@ public class Vaccine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     // Bu ilişkiyi "animal_id" sütunu üzerinden gerçekleştiriyoruz.
-    @JoinColumn(name = "animal_id", referencedColumnName="animal_id")
+    @JoinColumn(name = "animal_id", referencedColumnName = "animal_id")
     private Animal animal;
 
 }
