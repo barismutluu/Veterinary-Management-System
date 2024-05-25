@@ -2,6 +2,7 @@ package com.example.Veteriner.Sistemi.api;
 
 import com.example.Veteriner.Sistemi.bussines.abstracts.IAnimalService;
 import com.example.Veteriner.Sistemi.bussines.abstracts.IAppointmentService;
+import com.example.Veteriner.Sistemi.bussines.concretes.AppointmentManager;
 import com.example.Veteriner.Sistemi.core.config.modelMapper.IModelMapperService;
 import com.example.Veteriner.Sistemi.core.result.Result;
 import com.example.Veteriner.Sistemi.core.result.ResultData;
@@ -35,20 +36,38 @@ import java.util.stream.Collectors;
 public class AppointmentController {
     private final IAppointmentService appointmentService;
     private final IModelMapperService modelMapper;
+    private final AppointmentManager appointmentManager;
 
-    public AppointmentController(IAppointmentService appointmentService, IModelMapperService modelMapper) {
+    public AppointmentController(IAppointmentService appointmentService, IModelMapperService modelMapper, AppointmentManager appointmentManager) {
         this.appointmentService = appointmentService;
         this.modelMapper = modelMapper;
+        this.appointmentManager = appointmentManager;
     }
 
     // Yeni bir randevu kaydeder.
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<AppointmentResponse> save(@Valid @RequestBody AppointmentSaveRequest appointmentSaveRequest) {
+
+        LocalDateTime appointmentDateTime = appointmentSaveRequest.getAppointmentDateTime();
+
+        // Randevuların sadece saat başlarında yapılmasını kontrol et
+        if (appointmentDateTime.getMinute() != 0 || appointmentDateTime.getSecond() != 0) {
+            return ResultHelper.errorWithData("Randevular sadece saat başlarında yapılabilir.", null, HttpStatus.BAD_REQUEST);
+        }
+
+        Doctor doctor = new Doctor();
+        doctor.setId(appointmentSaveRequest.getDoctorId());
+
+        // Doktorun belirtilen saatte başka bir randevusu olup olmadığını kontrol et
+        if (appointmentManager.hasDoctorAppointmentAtTime(appointmentSaveRequest.getDoctorId(), appointmentSaveRequest.getAppointmentDateTime())) {
+            return ResultHelper.errorWithData("Doktorun bu saatte zaten bir randevusu var.", null, HttpStatus.BAD_REQUEST);
+        }
+
+
         Appointment appointment = new Appointment();
         appointment.setAppointmentDateTime(appointmentSaveRequest.getAppointmentDateTime());
 
-        Doctor doctor = new Doctor();
         doctor.setId(appointmentSaveRequest.getDoctorId());
         appointment.setDoctor(doctor);
 
@@ -58,6 +77,7 @@ public class AppointmentController {
 
         appointment = appointmentService.save(appointment);
         AppointmentResponse appointmentResponse = modelMapper.forResponse().map(appointment, AppointmentResponse.class);
+
         return ResultHelper.created(appointmentResponse);
     }
 

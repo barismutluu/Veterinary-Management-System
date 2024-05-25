@@ -21,6 +21,7 @@ public interface IAppointmentService {
     // Sayfalama yaparak belirli bir sayfa numarası ve sayfa boyutuna göre randevuları döner.
     Page<Appointment> cursor(int page, int pageSize);
 
+
     // Var olan bir randevuyu günceller ve güncellenmiş randevuyu döner.
     Appointment update(Appointment appointment);
 
@@ -35,4 +36,7 @@ public interface IAppointmentService {
 
     // Belirtilen tarih aralığında ve hayvan kimliğine göre randevuları döner.
     List<Appointment> getAppointmentsByDateRangeAndAnimal(LocalDate startDate, LocalDate endDate, Long animalId);
+
+    //Belirtilen doktorun belirtilen tarih ve saatte randevusu var mı yok mu kontrol eder.
+    boolean existsByDoctorIdAndAppointmentDateTime(Long doctorId, LocalDateTime dateTime);
 }

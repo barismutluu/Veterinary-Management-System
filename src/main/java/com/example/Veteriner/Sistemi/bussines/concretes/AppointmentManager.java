@@ -56,6 +56,11 @@ public class AppointmentManager implements IAppointmentService {
         return appointmentRepo.findByAnimalIdAndAppointmentDateTimeBetween(animalId, startDateTime, endDateTime);
     }
 
+    @Override
+    public boolean existsByDoctorIdAndAppointmentDateTime(Long doctorId, LocalDateTime dateTime) {
+        return appointmentRepo.existsByDoctorIdAndAppointmentDateTime(doctorId, dateTime);
+    }
+
     // Belirli bir tarih aralığında ve belirli bir doktor için randevuları getirir.
     @Override
     public List<Appointment> getAppointmentsByDateRangeAndDoctorId(LocalDate startDate, LocalDate endDate, Long doctorId) {
@@ -63,6 +68,7 @@ public class AppointmentManager implements IAppointmentService {
         LocalDateTime endDateTime = LocalDateTime.of(endDate, LocalTime.of(23, 59, 59));
         return appointmentRepo.findByDateRangeAndDoctorId(startDateTime, endDateTime, doctorId);
     }
+
 
     // Doktorun belirtilen tarihte müsait olup olmadığını kontrol eder.
     public boolean isDoctorAvailableOnDate(long doctorId, LocalDateTime dateTime) {
@@ -144,4 +150,5 @@ public class AppointmentManager implements IAppointmentService {
             throw new DoctorAvailabilityException("Girilen saatte başka bir randevu mevcuttur.");
         }
     }
+
 }
